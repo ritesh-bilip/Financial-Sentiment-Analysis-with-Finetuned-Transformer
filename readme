@@ -1,0 +1,440 @@
+# 📊 FinSentiment — AI-Powered Financial News Sentiment Analysis
+
+<div align="center">
+
+![Python](https://img.shields.io/badge/Python-3.11-blue?style=for-the-badge&logo=python)
+![PyTorch](https://img.shields.io/badge/PyTorch-2.1-red?style=for-the-badge&logo=pytorch)
+![Transformers](https://img.shields.io/badge/HuggingFace-Transformers-yellow?style=for-the-badge&logo=huggingface)
+![Django](https://img.shields.io/badge/Django-4.2-green?style=for-the-badge&logo=django)
+![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=nextdotjs)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue?style=for-the-badge&logo=postgresql)
+![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker)
+
+**A production-grade sentiment analysis system that transforms raw financial headlines into actionable market signals using a fine-tuned FinBERT transformer.**
+
+[Live Demo](#) · [Documentation](#-api-reference) · [Report Bug](../../issues) · [Request Feature](../../issues)
+
+</div>
+
+---
+
+## 📖 Table of Contents
+
+- [Overview](#-overview)
+- [Features](#-features)
+- [Architecture](#-architecture)
+- [Tech Stack](#-tech-stack)
+- [Model Performance](#-model-performance)
+- [Getting Started](#-getting-started)
+- [API Reference](#-api-reference)
+- [Project Structure](#-project-structure)
+- [Deployment](#-deployment)
+- [Roadmap](#-roadmap)
+- [Contributing](#-contributing)
+- [License](#-license)
+- [Acknowledgments](#-acknowledgments)
+
+---
+
+## 🎯 Overview
+
+**FinSentiment** is an end-to-end machine learning system designed to classify financial news headlines into three sentiment categories: **Positive**, **Negative**, and **Neutral**. It combines a fine-tuned **FinBERT** transformer model with a robust **Django REST API** backend and a modern **Next.js** frontend.
+
+### Why This Project?
+
+Financial markets react instantly to news. Traders, analysts, and fintech applications need to process thousands of headlines per day to gauge market mood. Manual analysis is impossible at scale — this project automates it with **95.35% accuracy** and **sub-200ms latency**.
+
+### What Makes It Different?
+
+- 🎯 **Domain-Specific Model** — Fine-tuned on 77K+ financial sentences, not generic sentiment data
+- ⚡ **Production-Ready** — Docker, PostgreSQL, Redis, and WebSocket support out of the box
+- 📊 **Full-Stack Solution** — From training notebook to deployed web application
+- 🔌 **Developer-Friendly** — Clean REST API, real-time WebSocket streaming, and batch processing
+
+---
+
+## ✨ Features
+
+### Core Capabilities
+
+| Feature | Description |
+|---------|-------------|
+| 🧠 **Fine-Tuned FinBERT** | Domain-adapted transformer for financial text (95.35% accuracy) |
+| ⚡ **Real-Time Prediction** | Sub-200ms response time on CPU inference |
+| 📊 **3-Way Classification** | Positive / Negative / Neutral with calibrated confidence scores |
+| 🔌 **REST API** | Simple JSON endpoints for seamless integration |
+| 🌐 **WebSocket Streaming** | Push-based real-time sentiment updates |
+| 📈 **Analytics Dashboard** | Interactive charts for trend analysis |
+| 💾 **PostgreSQL Persistence** | Every prediction stored for historical analysis |
+| 📦 **Batch Processing** | Analyze thousands of headlines in a single request |
+| 🐳 **Dockerized** | One-command deployment with `docker-compose up` |
+| 🎨 **Modern UI** | Glassmorphism design with Framer Motion animations |
+
+---
+
+## 🏗️ Architecture
+┌─────────────────────────────────────────────────────────────────┐
+│ USER INTERFACE │
+│ ┌─────────────────────────────────────────────────────────┐ │
+│ │ Next.js Frontend (Port 3000) │ │
+│ │ • Landing Page • Live Demo • Analytics Dashboard │ │
+│ └─────────────────────────────────────────────────────────┘ │
+└──────────────────────────────┬──────────────────────────────────┘
+│ HTTP / WebSocket
+▼
+┌─────────────────────────────────────────────────────────────────┐
+│ BACKEND LAYER │
+│ ┌─────────────────────────────────────────────────────────┐ │
+│ │ Django + Daphne ASGI (Port 8000) │ │
+│ │ • /api/predict • /api/history • /api/stats │ │
+│ │ • ws/sentiment/ (WebSocket consumer) │ │
+│ └─────────────────────────────────────────────────────────┘ │
+└──────────────────────────────┬──────────────────────────────────┘
+│
+┌────────────────┼────────────────┐
+▼ ▼ ▼
+┌──────────────┐ ┌────────────┐ ┌─────────────┐
+│ FinBERT │ │ PostgreSQL │ │ Redis │
+│ Model │ │ Predictions│ │ Channels │
+└──────────────┘ └────────────┘ └─────────────┘
+
+
+### Data Flow
+
+1. **User submits** a headline via the Next.js UI or API
+2. **Django receives** the request, validates it, and forwards to the ML module
+3. **FinBERT tokenizes** and classifies the text, returning probabilities
+4. **Prediction is saved** to PostgreSQL for analytics
+5. **JSON response** is returned to the client (or pushed via WebSocket)
+6. **Dashboard** visualizes trends from the stored predictions
+
+---
+
+## 🛠️ Tech Stack
+
+### Machine Learning
+- **Framework:** PyTorch 2.1
+- **Model:** `ProsusAI/finbert` (fine-tuned)
+- **Training Data:** `FinGPT/fingpt-sentiment-train` (77K samples)
+- **Training Infra:** Google Colab (T4 GPU)
+- **Libraries:** Transformers 4.36, Datasets, Scikit-learn
+
+### Backend
+- **Framework:** Django 4.2 + Django REST Framework
+- **ASGI Server:** Daphne 4.0 (for WebSocket support)
+- **Database:** PostgreSQL 15
+- **Cache/Broker:** Redis 7 + django-channels
+- **Language:** Python 3.11
+
+### Frontend
+- **Framework:** Next.js 16 (Pages Router)
+- **Styling:** Tailwind CSS 3.4
+- **Animations:** Framer Motion
+- **Charts:** Chart.js + react-chartjs-2
+- **Icons:** Lucide React
+
+### DevOps
+- **Containerization:** Docker + Docker Compose
+- **Deployment Targets:** Render / AWS / Heroku
+
+---
+
+## 📊 Model Performance
+
+### Evaluation Metrics
+
+| Metric | Score |
+|--------|-------|
+| **Accuracy** | **95.35%** |
+| **F1 Score** | 95.35% |
+| **Precision** | 95.36% |
+| **Recall** | 95.35% |
+
+### Training Configuration
+
+```python
+{
+  "base_model": "ProsusAI/finbert",
+  "num_labels": 3,
+  "learning_rate": 3e-5,
+  "batch_size": 32,
+  "epochs": 3,
+  "max_length": 128,
+  "optimizer": "AdamW",
+  "weight_decay": 0.01,
+}
+
+Sample Predictions
+Headline	Predicted	Confidence
+"Apple reports record quarterly earnings, stock surges"	Positive ✅	99.80%
+"Tesla shares plunge on weak Q3 deliveries"	Negative ✅	99.97%
+"Federal Reserve keeps interest rates unchanged"	Neutral ✅	99.97%
+
+🚀 Getting Started
+Prerequisites
+Python 3.11+
+
+Node.js 18+
+
+PostgreSQL 15
+
+Redis 7 (optional, for WebSocket)
+
+Docker & Docker Compose (optional)
+
+cd backend
+python -m venv venv
+source venv/bin/activate     # Windows: venv\Scripts\activate
+
+pip install -r requirements.txt
+
+# Create .env file
+cat > .env << EOF
+DB_NAME=sentiment_db
+DB_USER=postgres
+DB_PASSWORD=password
+DB_HOST=localhost
+DB_PORT=5432
+REDIS_HOST=localhost
+EOF
+
+# Run migrations
+python manage.py migrate
+
+# Start server (Daphne ASGI for WebSocket support)
+python manage.py runserver
+
+2. Backend Setup
+bash
+cd backend
+python -m venv venv
+source venv/bin/activate     # Windows: venv\Scripts\activate
+
+pip install -r requirements.txt
+
+# Create .env file
+cat > .env << EOF
+DB_NAME=sentiment_db
+DB_USER=postgres
+DB_PASSWORD=password
+DB_HOST=localhost
+DB_PORT=5432
+REDIS_HOST=localhost
+EOF
+
+# Run migrations
+python manage.py migrate
+
+# Start server (Daphne ASGI for WebSocket support)
+python manage.py runserver
+3. Start PostgreSQL & Redis (Docker)
+bash
+docker run -d --name postgres \
+  -e POSTGRES_DB=sentiment_db \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=password \
+  -p 5432:5432 postgres:15
+
+docker run -d --name redis -p 6379:6379 redis:7
+4. Frontend Setup
+bash
+cd frontend
+npm install
+npm run dev
+Open http://localhost:3000 to see the app.
+
+5. Test the API
+bash
+curl -X POST http://127.0.0.1:8000/api/predict \
+  -H "Content-Type: application/json" \
+  -d '{"headline": "Apple stock surges after record earnings"}'
+Response:
+
+json
+{
+  "headline": "Apple stock surges after record earnings",
+  "sentiment": "positive",
+  "confidence_scores": {
+    "negative": 0.0002,
+    "neutral": 0.0017,
+    "positive": 0.9980
+  },
+  "created_at": "2026-09-12T10:24:32.413748Z"
+}
+📡 API Reference
+POST /api/predict
+Classify a single headline.
+
+Request:
+
+json
+{ "headline": "Tesla shares plunge on weak deliveries" }
+Response:
+
+json
+{
+  "headline": "Tesla shares plunge on weak deliveries",
+  "sentiment": "negative",
+  "confidence_scores": {
+    "negative": 0.9997,
+    "neutral": 0.0001,
+    "positive": 0.0002
+  },
+  "created_at": "2026-09-12T10:24:56.080575Z"
+}
+GET /api/history?limit=50
+Retrieve recent predictions.
+
+GET /api/stats
+Get aggregated sentiment distribution.
+
+Response:
+
+json
+{
+  "total": 3,
+  "distribution": {
+    "positive": 1,
+    "neutral": 1,
+    "negative": 1
+  }
+}
+ws://localhost:8000/ws/sentiment/
+Real-time WebSocket streaming.
+
+Send:
+
+json
+{ "headline": "Nvidia reports blowout quarter" }
+Receive:
+
+json
+{
+  "headline": "Nvidia reports blowout quarter",
+  "sentiment": "positive",
+  "confidence_scores": { ... },
+  "created_at": "..."
+}
+📁 Project Structure
+text
+financial-sentiment-analysis/
+├── backend/
+│   ├── manage.py
+│   ├── requirements.txt
+│   ├── .env
+│   ├── backend/
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   ├── asgi.py
+│   │   └── wsgi.py
+│   ├── api/
+│   │   ├── models.py
+│   │   ├── views.py
+│   │   ├── serializers.py
+│   │   ├── urls.py
+│   │   ├── consumers.py
+│   │   └── routing.py
+│   └── ml/
+│       ├── models.py
+│       └── model_cache/
+│           ├── config.json
+│           ├── model.safetensors
+│           ├── tokenizer.json
+│           └── tokenizer_config.json
+├── frontend/
+│   ├── package.json
+│   ├── next.config.mjs
+│   ├── tailwind.config.cjs
+│   ├── postcss.config.mjs
+│   ├── .env.local
+│   ├── pages/
+│   │   ├── _app.js
+│   │   ├── index.js
+│   │   ├── demo.js
+│   │   └── dashboard.js
+│   ├── components/
+│   │   ├── Navbar.js
+│   │   ├── Hero.js
+│   │   ├── About.js
+│   │   ├── HowItWorks.js
+│   │   ├── Services.js
+│   │   ├── DemoSection.js
+│   │   ├── Footer.js
+│   │   └── Loader.js
+│   └── styles/
+│       └── globals.css
+├── notebooks/
+│   └── finbert-finetuning.ipynb
+├── docker-compose.yml
+└── README.md
+🚢 Deployment
+Option 1: Docker Compose (Recommended)
+bash
+docker-compose up -d
+Option 2: Render / Railway
+Push code to GitHub
+
+Create a new web service, connect repo
+
+Set environment variables (DB, Redis, Secret Key)
+
+Deploy
+
+Option 3: AWS (EC2 + RDS)
+Launch EC2 instance (Ubuntu 22.04, t3.medium)
+
+Install Docker, PostgreSQL RDS, ElastiCache Redis
+
+Run docker-compose up -d
+
+Set up Nginx as reverse proxy
+
+🗺️ Roadmap
+☑ Fine-tune FinBERT on financial sentiment data
+☑ Build Django REST API
+☑ Add WebSocket real-time streaming
+☑ Design Next.js interactive frontend
+☑ Analytics dashboard with Chart.js
+□ Batch CSV upload for bulk analysis
+□ Company/sector filtering
+□ News API integration (Reuters, Bloomberg)
+□ Alert system for sentiment spikes
+□ Multi-language support
+□ Mobile app (React Native)
+🤝 Contributing
+Contributions are welcome! Please follow these steps:
+
+Fork the repository
+
+Create a feature branch (git checkout -b feature/amazing-feature)
+
+Commit your changes (git commit -m 'Add amazing feature')
+
+Push to the branch (git push origin feature/amazing-feature)
+
+Open a Pull Request
+
+📄 License
+Distributed under the MIT License. See LICENSE for more information.
+
+🙏 Acknowledgments
+Hugging Face for the ProsusAI/finbert base model
+
+FinGPT for the labeled sentiment dataset
+
+Django & Next.js communities for excellent documentation
+
+Chart.js and Framer Motion for beautiful visualizations
+
+📬 Contact
+Your Name
+📧 your.email@example.com
+🔗 LinkedIn
+🐙 GitHub
+
+<div align="center">
+⭐ If you found this project useful, please give it a star! ⭐
+
+Made with ❤️ and 🧠 by [Your Name]
+
+</div> ```
